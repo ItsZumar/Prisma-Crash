@@ -29,15 +29,15 @@ datasource db {
 // }
 
 model User {
-  id             Int             @id @default(autoincrement())
-  name           String?
-  age            Int
-  email          String          @unique
-  role           Role            @default(BASIC)
-  preferences    Json
-  writtenPosts   Post[]          @relation("WrittenPosts")
-  favoritePosts  Post[]          @relation("FavoritePosts")
-  userPreference UserPreference?
+  id               Int             @id @default(autoincrement())
+  name             String?
+  age              Int
+  email            String          @unique
+  role             Role            @default(BASIC)
+  writtenPosts     Post[]          @relation("WrittenPosts")
+  favoritePosts    Post[]          @relation("FavoritePosts")
+  userPreference   UserPreference? @relation(fields: [userPreferenceId], references: [id])
+  userPreferenceId Int?            @unique
 
   // Block level attributes
   @@unique([age, name])
@@ -47,8 +47,7 @@ model User {
 model UserPreference {
   id           Int     @id @default(autoincrement())
   emailUpdates Boolean
-  user         User    @relation(fields: [userId], references: [id])
-  userId       Int     @unique
+  user         User?
 }
 
 model Post {
